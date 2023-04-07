@@ -16,6 +16,18 @@ function BookTicket() {
     fetch("http://localhost:3000/book")
       .then((response) => response.json())
       .then((data) => setBookData(data))
+      .then((data) => console.log(data))
+      .then(() => {
+        setFormData({
+          name: "",
+          email: "",
+          phone: "",
+          flightNumber: "",
+          departureDate: "",
+          returnDate: "",
+          passengers: "",
+        });
+      })
       .catch((error) => console.log(error));
   }, []);
 
@@ -47,9 +59,10 @@ function BookTicket() {
               type="text"
               id="name"
               name="name"
+              placeholder="Enter your name"
               value={formData.name}
               onChange={handleChange}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-white leading-tight focus:outline-none focus:shadow-outline"
             />
           </div>
           <div className="mb-4">
@@ -63,9 +76,10 @@ function BookTicket() {
               type="email"
               id="email"
               name="email"
+              placeholder="Enter your email"
               value={formData.email}
               onChange={handleChange}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-slate-50	 leading-tight focus:outline-none focus:shadow-outline"
             />
           </div>
           <div className="mb-4">
@@ -80,8 +94,9 @@ function BookTicket() {
               id="phone"
               name="phone"
               value={formData.phone}
+              placeholder="Enter your phone number"
               onChange={handleChange}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-slate-50	 leading-tight focus:outline-none focus:shadow-outline"
             />
           </div>
           <div className="mb-4">
@@ -96,7 +111,7 @@ function BookTicket() {
               name="flightNumber"
               value={formData.flightNumber}
               onChange={handleChange}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-slate-50 leading-tight focus:outline-none focus:shadow-outline"
             >
               <option value="">Select a flight number</option>
               {bookData.flights &&
@@ -120,7 +135,7 @@ function BookTicket() {
               name="departureDate"
               value={formData.departureDate}
               onChange={handleChange}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-slate-50 leading-tight focus:outline-none focus:shadow-outline"
             />
           </div>
           <div className="mb-4">
@@ -136,7 +151,7 @@ function BookTicket() {
               name="returnDate"
               value={formData.returnDate}
               onChange={handleChange}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-slate-50  leading-tight focus:outline-none focus:shadow-outline"
             />
           </div>
           <div className="mb-4">
@@ -152,7 +167,7 @@ function BookTicket() {
               name="passengers"
               value={formData.passengers}
               onChange={handleChange}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-slate-50 leading-tight focus:outline-none focus:shadow-outline"
             />
           </div>
           <div className="flex items-center justify-between">

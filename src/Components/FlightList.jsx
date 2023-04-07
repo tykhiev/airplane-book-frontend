@@ -25,14 +25,26 @@ function FlightList() {
 
   return (
     <div>
-      <h1 className="text-3xl py-2">Flights</h1>
-      <ul>
-        {flights.map((flight) => (
-          <li key={flight._id}>
-            <p className="text-lg my-1">Flight number: {flight._id}</p>
-            <p>From: {flight.from_location}</p>
-            <p>To: {flight.to_location}</p>
-            <p>Departure: {timeFormatter(flight.dateTime)}</p>
+      <h1 className="text-3xl py-2 px-4 ">Flights</h1>
+      <ul className="card bg-base-100">
+        {flights.map((flight, index) => (
+          <li
+            key={flight._id}
+            className="p-4 border-b border-base-200 shadow-xl rounded-xl"
+          >
+            <div className="text-lg font-bold mb-2">
+              {index + 1}. Flight number: {flight._id}
+            </div>
+            <div className="text-base mb-2">
+              <span className="font-bold">From:</span> {flight.from_location}
+            </div>
+            <div className="text-base mb-2">
+              <span className="font-bold">To:</span> {flight.to_location}
+            </div>
+            <div className="text-base mb-2">
+              <span className="font-bold">Departure:</span>{" "}
+              {timeFormatter(flight.dateTime)}
+            </div>
           </li>
         ))}
       </ul>

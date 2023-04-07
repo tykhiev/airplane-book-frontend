@@ -1,24 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 function RegisterPassenger() {
-  const [passengerData, setPassengerData] = useState({});
   const [formData, setFormData] = useState({
     name: "",
+    age: "",
+    gender: "",
     email: "",
-    phone: "",
-    address: "",
-    city: "",
-    state: "",
-    zip: "",
   });
-
-  useEffect(() => {
-    fetch("http://localhost:3000/create-passenger")
-      .then((response) => response.json())
-      .then((data) => setPassengerData(data))
-      .catch((error) => console.log(error));
-  }, []);
 
   const handleChange = (event) => {
     setFormData({
@@ -29,7 +18,24 @@ function RegisterPassenger() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(formData);
+    fetch("http://localhost:3000/create-passenger", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    })
+      .then((response) => response.json())
+      .then((data) => console.log(data))
+      .then(() => {
+        setFormData({
+          name: "",
+          age: "",
+          gender: "",
+          email: "",
+        });
+      })
+      .catch((error) => console.log(error));
   };
 
   return (
@@ -49,9 +55,44 @@ function RegisterPassenger() {
               id="name"
               name="name"
               value={formData.name}
+              placeholder="Enter your name"
               onChange={handleChange}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-800 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-slate-50 leading-tight focus:outline-none focus:shadow-outline"
             />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="age" className="block text-gray-700 font-bold mb-2">
+              Age
+            </label>
+            <input
+              type="text"
+              id="age"
+              name="age"
+              value={formData.age}
+              placeholder="Enter your age"
+              onChange={handleChange}
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-slate-50	 leading-tight focus:outline-none focus:shadow-outline"
+            />
+          </div>
+          <div className="mb-4">
+            <label
+              htmlFor="gender"
+              className="block text-gray-700 font-bold mb-2"
+            >
+              Gender
+            </label>
+            <select
+              id="gender"
+              name="gender"
+              value={formData.gender}
+              onChange={handleChange}
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-400 leading-tight focus:outline-none focus:shadow-outline"
+            >
+              <option value="">Select your gender</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="other">Other</option>
+            </select>
           </div>
           <div className="mb-4">
             <label
@@ -64,96 +105,21 @@ function RegisterPassenger() {
               type="email"
               id="email"
               name="email"
+              placeholder="Enter your email"
               value={formData.email}
               onChange={handleChange}
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             />
           </div>
-          <div className="mb-4">
-            <label
-              htmlFor="phone"
-              className="block text-gray-700 font-bold mb-2"
-            >
-              Phone
-            </label>
-            <input
-              type="tel"
-              id="phone"
-              name="phone"
-              value={formData.phone}
-              onChange={handleChange}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            />
-          </div>
-          <div className="mb-4">
-            <label
-              htmlFor="address"
-              className="block text-gray-700 font-bold mb-2"
-            >
-              Address
-            </label>
-            <input
-              type="text"
-              id="address"
-              name="address"
-              value={formData.address}
-              onChange={handleChange}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            />
-          </div>
-          <div className="mb-4">
-            <label
-              htmlFor="city"
-              className="block text-gray-700 font-bold mb-2"
-            >
-              City
-            </label>
-            <input
-              type="text"
-              id="city"
-              name="city"
-              value={formData.city}
-              onChange={handleChange}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            />
-          </div>
-          <div className="mb-4">
-            <label
-              htmlFor="state"
-              className="block text-gray-700 font-bold mb-2"
-            >
-              State
-            </label>
-            <input
-              type="text"
-              id="state"
-              name="state"
-              value={formData.state}
-              onChange={handleChange}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            />
-          </div>
-          <div className="mb-4">
-            <label htmlFor="zip" className="block text-gray-700 font-bold mb-2">
-              Zip
-            </label>
-            <input
-              type="text"
-              id="zip"
-              name="zip"
-              value={formData.zip}
-              onChange={handleChange}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            />
-          </div>
           <div className="flex items-center justify-between">
-            <Link>
-              <button
-                type="submit"
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-              >
-                Register Now
-              </button>
+            <button
+              type="submit"
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            >
+              Register Now
+            </button>
+            <Link to="/flight-list" className="text-gray-900 font-bold">
+              View Flight List
             </Link>
           </div>
         </form>
