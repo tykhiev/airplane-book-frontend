@@ -1,33 +1,28 @@
 import React, { useState, useEffect } from "react";
 
 function BookTicket() {
-  const [bookData, setBookData] = useState({});
+  const [flights, setFlights] = useState([]);
   const [formData, setFormData] = useState({
     name: "",
-    email: "",
-    phone: "",
     flightNumber: "",
-    departureDate: "",
-    returnDate: "",
-    passengers: "",
   });
 
+  function timeFormatter(datetime) {
+    const date = new Date(datetime);
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
+    const day = date.getDate().toString().padStart(2, "0");
+    const hour = date.getHours().toString().padStart(2, "0");
+    const minute = date.getMinutes().toString().padStart(2, "0");
+    const result = `${day}/${month}/${year} ${hour}:${minute}`;
+
+    return result;
+  }
+
   useEffect(() => {
-    fetch("http://localhost:3000/book")
+    fetch("http://localhost:3000/flights")
       .then((response) => response.json())
-      .then((data) => setBookData(data))
-      .then((data) => console.log(data))
-      .then(() => {
-        setFormData({
-          name: "",
-          email: "",
-          phone: "",
-          flightNumber: "",
-          departureDate: "",
-          returnDate: "",
-          passengers: "",
-        });
-      })
+      .then((data) => setFlights(data))
       .catch((error) => console.log(error));
   }, []);
 
@@ -40,7 +35,50 @@ function BookTicket() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(formData);
+
+    const flight = flights.find(
+      (flight) => flight._id === formData.flightNumber
+    );
+
+    if (!flight) {
+      console.log("Flight not found");
+      alert("No flight found");
+      return;
+    }
+    if (!formData.name) {
+      console.log("Name is required");
+      alert("Name is required");
+      return;
+    }
+    const data = {
+      name: formData.name,
+      flight_id: flight._id,
+    };
+    fetch("http://localhost:3000/all-passengers")
+      .then((response) => response.json())
+      .then((passengers) => {
+        const passenger = passengers.find((p) => p.name === formData.name);
+        if (!passenger) {
+          console.log("Passenger not found");
+          alert("Passenger not found");
+          return;
+        }
+      });
+    fetch("http://localhost:3000/book", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setFormData({
+          name: "",
+          flightNumber: "",
+        });
+      })
+      .catch((error) => console.log(error));
   };
 
   return (
@@ -67,40 +105,6 @@ function BookTicket() {
           </div>
           <div className="mb-4">
             <label
-              htmlFor="email"
-              className="block text-gray-700 font-bold mb-2"
-            >
-              Email
-            </label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              placeholder="Enter your email"
-              value={formData.email}
-              onChange={handleChange}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-slate-50	 leading-tight focus:outline-none focus:shadow-outline"
-            />
-          </div>
-          <div className="mb-4">
-            <label
-              htmlFor="phone"
-              className="block text-gray-700 font-bold mb-2"
-            >
-              Phone
-            </label>
-            <input
-              type="tel"
-              id="phone"
-              name="phone"
-              value={formData.phone}
-              placeholder="Enter your phone number"
-              onChange={handleChange}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-slate-50	 leading-tight focus:outline-none focus:shadow-outline"
-            />
-          </div>
-          <div className="mb-4">
-            <label
               htmlFor="flightNumber"
               className="block text-gray-700 font-bold mb-2"
             >
@@ -114,61 +118,17 @@ function BookTicket() {
               className="shadow appearance-none border rounded w-full py-2 px-3 text-slate-50 leading-tight focus:outline-none focus:shadow-outline"
             >
               <option value="">Select a flight number</option>
-              {bookData.flights &&
-                bookData.flights.map((flight) => (
-                  <option key={flight._id} value={flight.flight_number}>
-                    {flight.flight_number}
-                  </option>
-                ))}
+              {flights.map((flight) => (
+                <option
+                  key={flight._id}
+                  value={flight._id}
+                  className="text-slate-50"
+                >
+                  {flight._id} ({flight.from_location} - {flight.to_location}) @{" "}
+                  {timeFormatter(flight.dateTime)}
+                </option>
+              ))}
             </select>
-          </div>
-          <div className="mb-4">
-            <label
-              htmlFor="departureDate"
-              className="block text-gray-700 font-bold mb-2"
-            >
-              Departure Date
-            </label>
-            <input
-              type="date"
-              id="departureDate"
-              name="departureDate"
-              value={formData.departureDate}
-              onChange={handleChange}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-slate-50 leading-tight focus:outline-none focus:shadow-outline"
-            />
-          </div>
-          <div className="mb-4">
-            <label
-              htmlFor="returnDate"
-              className="block text-gray-700 font-bold mb-2"
-            >
-              Return Date
-            </label>
-            <input
-              type="date"
-              id="returnDate"
-              name="returnDate"
-              value={formData.returnDate}
-              onChange={handleChange}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-slate-50  leading-tight focus:outline-none focus:shadow-outline"
-            />
-          </div>
-          <div className="mb-4">
-            <label
-              htmlFor="passengers"
-              className="block text-gray-700 font-bold mb-2"
-            >
-              Passengers
-            </label>
-            <input
-              type="number"
-              id="passengers"
-              name="passengers"
-              value={formData.passengers}
-              onChange={handleChange}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-slate-50 leading-tight focus:outline-none focus:shadow-outline"
-            />
           </div>
           <div className="flex items-center justify-between">
             <button
@@ -183,5 +143,4 @@ function BookTicket() {
     </div>
   );
 }
-
 export default BookTicket;

@@ -45,6 +45,15 @@ function FlightList() {
               <span className="font-bold">Departure:</span>{" "}
               {timeFormatter(flight.dateTime)}
             </div>
+            <div className="text-base mb-2">
+              <span className="font-bold">Passengers:</span>{" "}
+              {flight.passengers.map((passenger, index) => (
+                <div key={passenger._id}>
+                  {index + 1} <span className="font-bold">Name:</span>{" "}
+                  {passenger.name}
+                </div>
+              ))}
+            </div>
           </li>
         ))}
       </ul>

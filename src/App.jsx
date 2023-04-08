@@ -4,6 +4,7 @@ import BookTicket from "./Components/BookTicket";
 import FlightList from "./Components/FlightList";
 import RegisterPassenger from "./Components/RegisterPassenger";
 import NavBar from "./Components/NavBar";
+import Home from "./Components/Home";
 import "./App.css";
 
 function App() {
@@ -11,7 +12,9 @@ function App() {
     <Router>
       <NavBar />
       <Switch>
-        <Route exact path="/" />
+        <Route exact path="/">
+          <Home />
+        </Route>
         <Route path="/flight-list">
           <FlightList />
         </Route>
