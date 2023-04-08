@@ -18,7 +18,7 @@ function RegisterPassenger() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    fetch("http://localhost:3000/create-passenger", {
+    fetch("https://airplane-book-backend.vercel.app/create-passenger", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
