@@ -5,7 +5,7 @@ function FlightList() {
   const [flights, setFlights] = useState([]);
 
   useEffect(() => {
-    fetch("https://airplane-book-backend.vercel.app/flights")
+    fetch("https://airplane-book.onrender.com/flights")
       .then((response) => response.json())
       .then((data) => setFlights(data))
       .catch((error) => console.log(error));

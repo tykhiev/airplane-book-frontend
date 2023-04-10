@@ -20,7 +20,7 @@ function BookTicket() {
   }
 
   useEffect(() => {
-    fetch("https://airplane-book-backend.vercel.app/flights")
+    fetch("https://airplane-book.onrender.com/flights")
       .then((response) => response.json())
       .then((data) => setFlights(data))
       .catch((error) => console.log(error));
@@ -54,7 +54,7 @@ function BookTicket() {
       name: formData.name,
       flight_id: flight._id,
     };
-    fetch("https://airplane-book-backend.vercel.app/all-passengers")
+    fetch("https://airplane-book.onrender.com/all-passengers")
       .then((response) => response.json())
       .then((passengers) => {
         const passenger = passengers.find((p) => p.name === formData.name);
@@ -64,7 +64,7 @@ function BookTicket() {
           return;
         }
       });
-    fetch("https://airplane-book-backend.vercel.app/book", {
+    fetch("https://airplane-book.onrender.com/book", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
